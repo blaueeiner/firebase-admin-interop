@@ -3,6 +3,7 @@ library firebase_storage;
 
 import "package:js/js.dart";
 import 'package:node_interop/node.dart';
+import 'package:node_interop/stream.dart';
 
 import 'bindings.dart';
 
@@ -20,12 +21,14 @@ abstract class Storage {
   ///
   /// [name] of the bucket to be retrieved is optional. If [name] is not
   /// specified, retrieves a reference to the default bucket.
-  external Bucket bucket([String name]);
+  external Bucket bucket();
 }
 
 @JS()
 @anonymous
 abstract class Bucket {
+  external String get name;
+
   /// Combine multiple files into one new file.
   ///
   /// [sources] can be a list of strings or [StorageFile]s.
@@ -34,13 +37,12 @@ abstract class Bucket {
   /// Returns promise containing list with following values:
   /// [0] [StorageFile] - The new file.
   /// [1] [Object]      - The full API response.
-  external Promise combine(List sources, dynamic destination,
-      [options, callback]);
+  external Promise combine(List sources, dynamic destination, [options, callback]);
 
   /// Create a bucket.
   ///
   /// Returns promise containing CreateBucketResponse.
-  external Promise create([CreateBucketRequest metadata, callback]);
+  external Promise create([CreateBucketOptions option, callback]);
 
   /// Checks if the bucket exists.
   ///
@@ -66,7 +68,7 @@ abstract class Bucket {
   /// For faster crc32c computation, you must manually install `fast-crc32c`:
   ///
   ///     npm install --save fast-crc32c
-  external Promise upload(String pathString, [options, callback]);
+  external Promise upload(String pathString, [UploadOptions options, callback]);
 }
 
 @JS()
@@ -86,7 +88,7 @@ abstract class CombineOptions {
 
 @JS()
 @anonymous
-abstract class CreateBucketRequest {
+abstract class CreateBucketOptions {
   // TODO: complete
 }
 
@@ -114,10 +116,153 @@ abstract class StorageFileOptions {
   /// Overwrites the object metadata's kms_key_name value, if any.
   external String get kmsKeyName;
 
-  external factory StorageFileOptions(
-      {String generation, String encryptionKey, String kmsKeyName});
+  external String get userProject;
+
+  external factory StorageFileOptions({
+    String generation,
+    String encryptionKey,
+    String kmsKeyName,
+    String userProject,
+  });
 }
 
 @JS()
 @anonymous
-abstract class StorageFile {}
+abstract class StorageFile {
+  external String get name;
+
+  external Bucket get bucket;
+
+  external Storage get storage;
+
+  external Bucket get parent;
+
+  external Promise save(data, [CreateWriteStreamOptions options]);
+
+  external Writable createWriteStream([CreateWriteStreamOptions options]);
+
+  external Readable createReadStream([CreateReadStreamOptions options]);
+
+  external Promise delete([options]);
+}
+
+@JS()
+@anonymous
+class CreateWriteStreamOptions {
+  external String get contentType;
+
+  external bool get gzip;
+
+  external bool get resumable;
+
+  external bool get validation;
+
+  external factory CreateWriteStreamOptions({
+    String contentType,
+    bool gzip,
+    bool resumable,
+    bool validation,
+  });
+}
+
+@JS()
+@anonymous
+class CreateReadStreamOptions {
+  external String get userProject;
+
+  external bool get validation;
+
+  external num get start;
+
+  external num get end;
+
+  external bool get decompress;
+
+  external factory CreateReadStreamOptions({
+    String userProject,
+    bool validation,
+    num start,
+    num end,
+    bool decompress,
+  });
+}
+
+@JS()
+@anonymous
+class CreateResumableUploadOptions {
+  external String get configPath;
+
+  external StorageMetadata get metadata;
+
+  external String get origin;
+
+  external num get offset;
+
+  external String get predefinedAcl;
+
+  external bool get private;
+
+  external bool get public;
+
+  external String get uri;
+
+  external String get userProject;
+
+  external factory CreateResumableUploadOptions({
+    String configPath,
+    StorageMetadata metadata,
+    String origin,
+    num offset,
+    String predefinedAcl,
+    bool private,
+    bool public,
+    String uri,
+    String userProject,
+  });
+}
+
+@JS()
+@anonymous
+abstract class UploadOptions {
+  external String get destination;
+
+  external StorageMetadata get metadata;
+
+  external String get generation;
+
+  /// A custom encryption key.
+  external String get encryptionKey;
+
+  /// Resource name of the Cloud KMS key that will be used to encrypt the
+  /// object.
+  ///
+  /// Overwrites the object metadata's kms_key_name value, if any.
+  external String get kmsKeyName;
+
+  external bool get resumable;
+
+  external String get contentType;
+
+  external factory UploadOptions({
+    StorageMetadata metadata,
+    String destination,
+    String generation,
+    String encryptionKey,
+    String kmsKeyName,
+    bool resumable,
+    String contentType,
+  });
+}
+
+@JS()
+@anonymous
+abstract class StorageMetadata {
+  external String get contentType;
+
+  external dynamic get metadata;
+
+  external factory StorageMetadata({
+    String contentType,
+    dynamic metadata,
+  });
+}

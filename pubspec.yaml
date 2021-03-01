@@ -5,12 +5,12 @@ homepage: https://github.com/pulyaevskiy/firebase-admin-interop
 author: Anatoly Pulyaevskiy <anatoly.pulyaevskiy@gmail.com>
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  js: ^0.6.1+1
-  node_interop: ^1.0.3
-  meta: ^1.1.8
+  js: ^0.6.2
+  node_interop: ^1.2.1
+  meta: ^1.2.4
   quiver_hashcode: ^2.0.0
 
 dev_dependencies:
@@ -18,3 +18,4 @@ dev_dependencies:
   build_runner: ^1.7.4
   build_node_compilers: ^0.2.4
   build_test: ^0.10.12+1
+  node_http: ^1.0.1
