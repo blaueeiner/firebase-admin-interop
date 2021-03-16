@@ -12,6 +12,7 @@ import 'bindings.dart' as js;
 import 'database.dart';
 import 'firestore.dart';
 import 'messaging.dart';
+import 'storage.dart';
 
 /// Represents initialized Firebase application and provides access to the
 /// app's services.
@@ -29,23 +30,24 @@ class App {
   js.AppOptions get options => nativeInstance.options;
 
   /// Gets the [Auth] service for this application.
-  Auth auth() => _auth ??= new Auth(nativeInstance.auth());
+  Auth auth() => _auth ??= Auth(nativeInstance.auth());
   Auth _auth;
 
   /// Gets Realtime [Database] client for this application.
-  Database database() =>
-      _database ??= new Database(this.nativeInstance.database(), this);
+  Database database() => _database ??= Database(this.nativeInstance.database(), this);
   Database _database;
 
   /// Gets [Firestore] client for this application.
-  Firestore firestore() =>
-      _firestore ??= new Firestore(nativeInstance.firestore());
+  Firestore firestore() => _firestore ??= Firestore(nativeInstance.firestore());
   Firestore _firestore;
 
   /// Gets [Messaging] client for this application.
-  Messaging messaging() =>
-      _messaging ??= new Messaging(nativeInstance.messaging());
+  Messaging messaging() => _messaging ??= Messaging(nativeInstance.messaging());
   Messaging _messaging;
+
+  /// Gets [Storage] client for this application.
+  Storage storage() => _storage ??= Storage(nativeInstance.storage());
+  Storage _storage;
 
   /// Renders this app unusable and frees the resources of all associated
   /// services.

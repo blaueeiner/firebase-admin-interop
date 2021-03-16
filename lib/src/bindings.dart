@@ -7,8 +7,10 @@ import 'package:js/js.dart';
 import 'package:node_interop/node.dart';
 
 import 'firestore_bindings.dart' show Firestore, GeoPointUtil, FieldValues;
+import 'storage_bindings.dart';
 
 export 'firestore_bindings.dart';
+export 'storage_bindings.dart';
 
 // admin =========================================================================
 
@@ -21,7 +23,7 @@ final FirebaseAdmin admin = require('firebase-admin');
 @anonymous
 abstract class FirebaseAdmin {
   /// Creates and initializes a Firebase app instance.
-  external App initializeApp([options, String name]);
+  external App initializeApp([AppOptions options, String name]);
 
   /// The current SDK version.
   external String get SDK_VERSION;
@@ -162,6 +164,9 @@ abstract class App {
 
   /// Gets the [Messaging] service for this app.
   external Messaging messaging();
+
+  /// Gets the [Storge] client for this app.
+  external Storage storage();
 }
 
 /// Available options to pass to [initializeApp].
@@ -582,8 +587,7 @@ abstract class Messaging {
   ///
   /// Returns Promise<MessagingDevicesResponse> fulfilled with the server's
   /// response after the message has been sent.
-  external Promise sendToDevice(
-      String registrationToken, MessagingPayload payload,
+  external Promise sendToDevice(String registrationToken, MessagingPayload payload,
       [MessagingOptions options]);
 
   /// Sends an FCM message to a device group corresponding to the provided
@@ -591,16 +595,14 @@ abstract class Messaging {
   ///
   /// Returns Promise<MessagingDevicesResponse> fulfilled with the server's
   /// response after the message has been sent.
-  external Promise sendToDeviceGroup(
-      String notificationKey, MessagingPayload payload,
+  external Promise sendToDeviceGroup(String notificationKey, MessagingPayload payload,
       [MessagingOptions options]);
 
   /// Sends an FCM message to a topic.
   ///
   /// Returns Promise<MessagingTopicResponse> fulfilled with the server's
   /// response after the message has been sent.
-  external Promise sendToTopic(String topic, MessagingPayload payload,
-      [MessagingOptions options]);
+  external Promise sendToTopic(String topic, MessagingPayload payload, [MessagingOptions options]);
 
   /// Subscribes a device to an FCM topic.
   ///
@@ -612,8 +614,7 @@ abstract class Messaging {
   ///
   /// Returns Promise<MessagingTopicManagementResponse> fulfilled with the
   /// server's response after the device has been subscribed to the topic.
-  external Promise unsubscribeFromTopic(
-      String registrationTokens, String topic);
+  external Promise unsubscribeFromTopic(String registrationTokens, String topic);
 }
 
 @JS()
@@ -1663,8 +1664,7 @@ abstract class Reference extends Query {
   ///
   /// See also:
   /// - [Sorting and filtering data](https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data)
-  external Promise setWithPriority(value, priority,
-      [onComplete(JsError error)]);
+  external Promise setWithPriority(value, priority, [onComplete(JsError error)]);
 
   /// Atomically modifies the data at this location.
   ///
@@ -1690,8 +1690,8 @@ abstract class Reference extends Query {
   /// to perform a transaction. This is because the client-side nature of
   /// transactions requires the client to read the data in order to
   /// transactionally update it.
-  external Promise transaction(transactionUpdate(snapshot),
-      onComplete(error, bool committed, snapshot), bool applyLocally);
+  external Promise transaction(
+      transactionUpdate(snapshot), onComplete(error, bool committed, snapshot), bool applyLocally);
 
   /// Writes multiple values to the Database at once.
   ///
@@ -1794,8 +1794,7 @@ abstract class OnDisconnect {
   /// Ensures the data at this location is set to the specified [value] and
   /// [priority] when the client is disconnected (due to closing the browser,
   /// navigating to a new page, or network issues).
-  external Promise setWithPriority(value, priority,
-      [onComplete(JsError error)]);
+  external Promise setWithPriority(value, priority, [onComplete(JsError error)]);
 
   /// Writes multiple [values] at this location when the client is disconnected
   /// (due to closing the browser, navigating to a new page, or network issues).
@@ -1923,16 +1922,14 @@ abstract class Query {
   /// This is the primary way to read data from a [Database]. Your callback will
   /// be triggered for the initial data and again whenever the data changes.
   /// Use [off] to stop receiving updates.
-  external void on(String eventType, callback,
-      [cancelCallbackOrContext, context]);
+  external void on(String eventType, callback, [cancelCallbackOrContext, context]);
 
   /// Listens for exactly one event of the specified [eventType], and then stops
   /// listening.
   ///
   /// This is equivalent to calling [on], and then calling [off] inside the
   /// callback function. See [on] for details on the event types.
-  external Promise once(String eventType,
-      [successCallback, failureCallbackOrContext, context]);
+  external Promise once(String eventType, [successCallback, failureCallbackOrContext, context]);
 
   /// Generates a new [Query] object ordered by the specified child key.
   ///
