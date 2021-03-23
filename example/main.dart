@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 
 main() async {

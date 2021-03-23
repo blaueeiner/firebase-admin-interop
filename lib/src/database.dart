@@ -1,12 +1,14 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:js';
 
 import 'package:meta/meta.dart';
-import 'package:node_interop/util.dart';
 import 'package:node_interop/js.dart';
+import 'package:node_interop/util.dart';
 
 import 'app.dart';
 import 'bindings.dart' as js;
@@ -36,8 +38,7 @@ class Database {
 
   /// Returns a [Reference] representing the location in the Database
   /// corresponding to the provided Firebase URL.
-  Reference refFromUrl(String url) =>
-      new Reference(nativeInstance.refFromURL(url));
+  Reference refFromUrl(String url) => new Reference(nativeInstance.refFromURL(url));
 }
 
 /// List of event types supported in [Query.on] and [Query.off].
@@ -191,8 +192,7 @@ class Query {
   /// the first 100 ordered messages. As items change, we will receive
   /// child_removed events for each item that drops out of the active list so
   /// that the total number stays at 100.
-  Query limitToFirst(int limit) =>
-      new Query(nativeInstance.limitToFirst(limit));
+  Query limitToFirst(int limit) => new Query(nativeInstance.limitToFirst(limit));
 
   /// Generates a new [Query] limited to the last specific number of children.
   ///
@@ -242,8 +242,7 @@ class Query {
   /// Use [off] or [QuerySubscription.cancel] to stop receiving updates.
   ///
   /// Returns [QuerySubscription] which can be used to cancel the subscription.
-  QuerySubscription on<T>(
-      String eventType, Function(DataSnapshot<T> snapshot) callback,
+  QuerySubscription on<T>(String eventType, Function(DataSnapshot<T> snapshot) callback,
       [Function() cancelCallback]) {
     var fn = allowInterop((snapshot) => callback(new DataSnapshot(snapshot)));
     if (cancelCallback != null) {
@@ -258,8 +257,7 @@ class Query {
   ///
   /// Queries can only order by one key at a time. Calling [orderByChild]
   /// multiple times on the same query is an error.
-  Query orderByChild(String path) =>
-      new Query(nativeInstance.orderByChild(path));
+  Query orderByChild(String path) => new Query(nativeInstance.orderByChild(path));
 
   /// Generates a new [Query] object ordered by key.
   ///
@@ -431,8 +429,7 @@ class Reference extends Query {
   ///
   /// See also:
   /// - [Sorting and filtering data](https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data)
-  Future<void> setPriority(priority) =>
-      promiseToFuture(nativeInstance.setPriority(priority));
+  Future<void> setPriority(priority) => promiseToFuture(nativeInstance.setPriority(priority));
 
   /// Writes data the Database location. Like [setValue] but also specifies the
   /// [priority] for that data.
@@ -443,8 +440,7 @@ class Reference extends Query {
   /// See also:
   /// - [Sorting and filtering data](https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data)
   Future<void> setWithPriority<T>(T value, priority) {
-    return promiseToFuture(
-        nativeInstance.setWithPriority(jsify(value), priority));
+    return promiseToFuture(nativeInstance.setWithPriority(jsify(value), priority));
   }
 
   /// Atomically modifies the data at this location.
@@ -485,8 +481,7 @@ class Reference extends Query {
   /// to perform a transaction. This is because the client-side nature of
   /// transactions requires the client to read the data in order to
   /// transactionally update it.
-  Future<DatabaseTransaction> transaction<T>(
-      DatabaseTransactionHandler<T> handler,
+  Future<DatabaseTransaction> transaction<T>(DatabaseTransactionHandler<T> handler,
       [bool applyLocally = true]) {
     var promise = nativeInstance.transaction(
       allowInterop(_createTransactionHandler(handler)),
@@ -496,8 +491,7 @@ class Reference extends Query {
     return promiseToFuture(promise).then(
       (result) {
         final jsResult = result as js.TransactionResult;
-        return new DatabaseTransaction(
-            jsResult.committed, new DataSnapshot(jsResult.snapshot));
+        return new DatabaseTransaction(jsResult.committed, new DataSnapshot(jsResult.snapshot));
       },
     );
   }
@@ -550,8 +544,7 @@ class Reference extends Query {
 
 /// Interface for a Realtime Database transaction handler function used
 /// in [Reference.transaction].
-typedef DatabaseTransactionHandler<T> = TransactionResult<T> Function(
-    T currentData);
+typedef DatabaseTransactionHandler<T> = TransactionResult<T> Function(T currentData);
 
 /// Realtime Database transaction result returned from [DatabaseTransactionHandler].
 ///
@@ -563,8 +556,7 @@ class TransactionResult<T> {
   final T data;
 
   static TransactionResult abort = new TransactionResult._(true, null);
-  static TransactionResult<T> success<T>(T data) =>
-      new TransactionResult._(false, data);
+  static TransactionResult<T> success<T>(T data) => new TransactionResult._(false, data);
 }
 
 /// Firebase Realtime Database transaction result returned from
@@ -588,8 +580,7 @@ class DatabaseTransaction {
 /// For more details see documentation for [Reference.push].
 class FutureReference extends Reference {
   final Future<void> done;
-  FutureReference(js.ThenableReference nativeInstance, this.done)
-      : super(nativeInstance);
+  FutureReference(js.ThenableReference nativeInstance, this.done) : super(nativeInstance);
 }
 
 /// A `DataSnapshot` contains data from a [Database] location.
@@ -620,8 +611,7 @@ class DataSnapshot<T> {
   /// or a deeper, slash-separated path (for example, "ada/name/first"). If the
   /// child location has no data, an empty DataSnapshot (that is, a
   /// DataSnapshot whose value is `null`) is returned.
-  DataSnapshot<S> child<S>(String path) =>
-      new DataSnapshot(nativeInstance.child(path));
+  DataSnapshot<S> child<S>(String path) => new DataSnapshot(nativeInstance.child(path));
 
   /// Returns `true` if this DataSnapshot contains any data.
   ///

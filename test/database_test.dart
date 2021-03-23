@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 
 @TestOn('node')
@@ -134,8 +136,7 @@ void main() {
         var tx = await refUpdate.transaction((currentData) {
           // Not sure I fully understand why Firebase sends initial `null` value
           // here, but this should not have anything to do with our Dart code.
-          if (currentData == null)
-            return TransactionResult.success(currentData);
+          if (currentData == null) return TransactionResult.success(currentData);
           final data = new Map<String, dynamic>.from(currentData);
           data['tx'] = true;
           return TransactionResult.success(data);

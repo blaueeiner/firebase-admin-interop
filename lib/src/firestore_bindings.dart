@@ -1,3 +1,5 @@
+// @dart=2.9
+
 @JS()
 library firestore;
 
@@ -119,8 +121,7 @@ abstract class Firestore {
   /// returned by the updateFunction will be returned here. Else if the
   /// transaction failed, a rejected Future with the corresponding failure error
   /// will be returned.
-  external Promise runTransaction(
-      Promise updateFunction(Transaction transaction));
+  external Promise runTransaction(Promise updateFunction(Transaction transaction));
 
   /// Creates a write batch, used for performing multiple writes as a single
   /// atomic operation.
@@ -206,8 +207,7 @@ abstract class Transaction {
   /// Writes to the document referred to by the provided `DocumentReference`.
   /// If the document does not exist yet, it will be created. If you pass
   /// `SetOptions`, the provided data can be merged into the existing document.
-  external Transaction set(DocumentReference documentRef, DocumentData data,
-      [SetOptions options]);
+  external Transaction set(DocumentReference documentRef, DocumentData data, [SetOptions options]);
 
   /// Updates fields in the document referred to by the provided
   /// `DocumentReference`. The update will fail if applied to a document that
@@ -229,12 +229,10 @@ abstract class Transaction {
   /*external Transaction update(DocumentReference documentRef, String|FieldPath field, dynamic value, [dynamic fieldsOrPrecondition1, dynamic fieldsOrPrecondition2, dynamic fieldsOrPrecondition3, dynamic fieldsOrPrecondition4, dynamic fieldsOrPrecondition5]);*/
   external Transaction update(
       DocumentReference documentRef, dynamic /*String|FieldPath*/ data_field,
-      [dynamic /*Precondition|dynamic*/ precondition_value,
-      List<dynamic> fieldsOrPrecondition]);
+      [dynamic /*Precondition|dynamic*/ precondition_value, List<dynamic> fieldsOrPrecondition]);
 
   /// Deletes the document referred to by the provided `DocumentReference`.
-  external Transaction delete(DocumentReference documentRef,
-      [Precondition precondition]);
+  external Transaction delete(DocumentReference documentRef, [Precondition precondition]);
 }
 
 /// A write batch, used to perform multiple writes as a single atomic unit.
@@ -257,8 +255,7 @@ abstract class WriteBatch {
   /// Write to the document referred to by the provided [DocumentReference].
   /// If the document does not exist yet, it will be created. If you pass
   /// [options], the provided data can be merged into the existing document.
-  external WriteBatch set(DocumentReference documentRef, DocumentData data,
-      [SetOptions options]);
+  external WriteBatch set(DocumentReference documentRef, DocumentData data, [SetOptions options]);
 
   /// Updates fields in the document referred to by this DocumentReference.
   /// The update will fail if applied to a document that does not exist.
@@ -385,8 +382,7 @@ abstract class DocumentReference {
   /// is available.
   /// cancelled. No further callbacks will occur.
   /// the snapshot listener.
-  external Function onSnapshot(void onNext(DocumentSnapshot snapshot),
-      [void onError(Error error)]);
+  external Function onSnapshot(void onNext(DocumentSnapshot snapshot), [void onError(Error error)]);
 }
 
 /// A `DocumentSnapshot` contains data read from a document in your Firestore
@@ -529,8 +525,7 @@ abstract class DocumentQuery {
     dynamic fieldValues3,
     dynamic fieldValues4,
     dynamic fieldValues5]);*/
-  external DocumentQuery startAt(
-      dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
+  external DocumentQuery startAt(dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
 
   /// Creates and returns a new Query that starts after the provided document
   /// (exclusive). The starting position is relative to the order of the query.
@@ -565,8 +560,7 @@ abstract class DocumentQuery {
     dynamic fieldValues3,
     dynamic fieldValues4,
     dynamic fieldValues5]);*/
-  external DocumentQuery endBefore(
-      dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
+  external DocumentQuery endBefore(dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
 
   /// Creates and returns a new Query that ends at the provided document
   /// (inclusive). The end position is relative to the order of the query. The
@@ -583,8 +577,7 @@ abstract class DocumentQuery {
     dynamic fieldValues3,
     dynamic fieldValues4,
     dynamic fieldValues5]);*/
-  external DocumentQuery endAt(
-      dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
+  external DocumentQuery endAt(dynamic /*DocumentSnapshot|List<dynamic>*/ snapshot_fieldValues);
 
   /// Executes the query and returns the results as a `QuerySnapshot`.
   external Promise get();
@@ -596,8 +589,7 @@ abstract class DocumentQuery {
   /// is available.
   /// cancelled. No further callbacks will occur.
   /// the snapshot listener.
-  external Function onSnapshot(void onNext(QuerySnapshot snapshot),
-      [void onError(Error error)]);
+  external Function onSnapshot(void onNext(QuerySnapshot snapshot), [void onError(Error error)]);
 }
 
 /// A `QuerySnapshot` contains zero or more `QueryDocumentSnapshot` objects
@@ -636,8 +628,7 @@ abstract class QuerySnapshot {
 
   /// Enumerates all of the documents in the QuerySnapshot.
   /// each document in the snapshot.
-  external void forEach(void callback(QueryDocumentSnapshot result),
-      [dynamic thisArg]);
+  external void forEach(void callback(QueryDocumentSnapshot result), [dynamic thisArg]);
 }
 
 /// The type of of a `DocumentChange` may be 'added', 'removed', or 'modified'.

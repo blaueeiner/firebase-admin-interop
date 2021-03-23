@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:meta/meta.dart';
@@ -8,12 +10,7 @@ import 'package:node_interop/util.dart';
 
 import 'bindings.dart' as js show Auth;
 import 'bindings.dart'
-    show
-        UserRecord,
-        CreateUserRequest,
-        UpdateUserRequest,
-        ListUsersResult,
-        DecodedIdToken;
+    show UserRecord, CreateUserRequest, UpdateUserRequest, ListUsersResult, DecodedIdToken;
 
 export 'bindings.dart'
     show
@@ -38,22 +35,18 @@ class Auth {
   ///
   /// Returns a [Future] containing a custom token string for the provided [uid]
   /// and payload.
-  Future<String> createCustomToken(String uid,
-          [Map<String, String> developerClaims]) =>
-      promiseToFuture(
-          nativeInstance.createCustomToken(uid, jsify(developerClaims)));
+  Future<String> createCustomToken(String uid, [Map<String, String> developerClaims]) =>
+      promiseToFuture(nativeInstance.createCustomToken(uid, jsify(developerClaims)));
 
   /// Creates a new user.
   Future<UserRecord> createUser(CreateUserRequest properties) =>
       promiseToFuture(nativeInstance.createUser(properties));
 
   /// Deletes an existing user.
-  Future<void> deleteUser(String uid) =>
-      promiseToFuture(nativeInstance.deleteUser(uid));
+  Future<void> deleteUser(String uid) => promiseToFuture(nativeInstance.deleteUser(uid));
 
   /// Gets the user data for the user corresponding to a given [uid].
-  Future<UserRecord> getUser(String uid) =>
-      promiseToFuture(nativeInstance.getUser(uid));
+  Future<UserRecord> getUser(String uid) => promiseToFuture(nativeInstance.getUser(uid));
 
   /// Gets the user data for the user corresponding to a given [email].
   Future<UserRecord> getUserByEmail(String email) =>
@@ -105,10 +98,8 @@ class Auth {
   /// will throw an error. Custom claims are added to the user's ID token which
   /// is transmitted on every authenticated request. For profile non-access
   /// related user attributes, use database or other separate storage systems.
-  Future<void> setCustomUserClaims(
-          String uid, Map<String, dynamic> customUserClaims) =>
-      promiseToFuture(
-          nativeInstance.setCustomUserClaims(uid, jsify(customUserClaims)));
+  Future<void> setCustomUserClaims(String uid, Map<String, dynamic> customUserClaims) =>
+      promiseToFuture(nativeInstance.setCustomUserClaims(uid, jsify(customUserClaims)));
 
   /// Updates an existing user.
   Future<UserRecord> updateUser(String uid, UpdateUserRequest properties) =>
@@ -122,8 +113,7 @@ class Auth {
   /// was revoked.
   Future<DecodedIdToken> verifyIdToken(String idToken, [bool checkRevoked]) {
     if (checkRevoked != null) {
-      return promiseToFuture(
-          nativeInstance.verifyIdToken(idToken, checkRevoked));
+      return promiseToFuture(nativeInstance.verifyIdToken(idToken, checkRevoked));
     } else {
       return promiseToFuture(nativeInstance.verifyIdToken(idToken));
     }

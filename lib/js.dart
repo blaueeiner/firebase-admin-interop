@@ -13,6 +13,10 @@
 ///       }));
 ///       console.log(app);
 ///     }
+///
+
+// @dart=2.9
+
 library firebase_admin_interop.js;
 
 export 'src/bindings.dart';

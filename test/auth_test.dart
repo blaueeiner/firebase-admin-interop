@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 @TestOn('node')
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:node_interop/node.dart';
@@ -14,8 +16,7 @@ void main() {
 
     setUpAll(() async {
       app = initFirebaseApp();
-      var user =
-          await app.auth().getUser('testuser').catchError((error) => null);
+      var user = await app.auth().getUser('testuser').catchError((error) => null);
       if (user == null) {
         await app.auth().createUser(new CreateUserRequest(uid: 'testuser'));
       }
@@ -26,8 +27,7 @@ void main() {
     });
 
     test('createCustomToken', () async {
-      var token =
-          await app.auth().createCustomToken('testuser', {'role': 'admin'});
+      var token = await app.auth().createCustomToken('testuser', {'role': 'admin'});
       expect(token, isNotEmpty);
     });
 

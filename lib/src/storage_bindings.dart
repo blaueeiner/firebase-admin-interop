@@ -1,3 +1,5 @@
+// @dart=2.9
+
 @JS()
 library firebase_storage;
 

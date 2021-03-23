@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:meta/meta.dart';
 import 'package:node_interop/stream.dart';
 import 'package:node_interop/util.dart';

@@ -41,6 +41,9 @@
 ///   * [App]
 ///   * [Database]
 ///   * [Firestore]
+
+// @dart=2.9
+
 library firebase_admin_interop;
 
 export 'src/admin.dart';

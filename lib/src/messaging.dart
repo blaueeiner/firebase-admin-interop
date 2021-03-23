@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:meta/meta.dart';
@@ -98,15 +100,12 @@ class Messaging {
   ///
   /// Returns Future<MessagingConditionResponse> fulfilled with the server's
   /// response after the message has been sent.
-  Future<MessagingConditionResponse> sendToCondition(
-      String condition, MessagingPayload payload,
+  Future<MessagingConditionResponse> sendToCondition(String condition, MessagingPayload payload,
       [MessagingOptions options]) {
     if (options != null)
-      return promiseToFuture(
-          nativeInstance.sendToCondition(condition, payload, options));
+      return promiseToFuture(nativeInstance.sendToCondition(condition, payload, options));
     else
-      return promiseToFuture(
-          nativeInstance.sendToCondition(condition, payload));
+      return promiseToFuture(nativeInstance.sendToCondition(condition, payload));
   }
 
   /// Sends an FCM message to a single device corresponding to the provided
@@ -114,15 +113,12 @@ class Messaging {
   ///
   /// Returns Future<MessagingDevicesResponse> fulfilled with the server's
   /// response after the message has been sent.
-  Future<MessagingDevicesResponse> sendToDevice(
-      String registrationToken, MessagingPayload payload,
+  Future<MessagingDevicesResponse> sendToDevice(String registrationToken, MessagingPayload payload,
       [MessagingOptions options]) {
     if (options != null)
-      return promiseToFuture(
-          nativeInstance.sendToDevice(registrationToken, payload, options));
+      return promiseToFuture(nativeInstance.sendToDevice(registrationToken, payload, options));
     else
-      return promiseToFuture(
-          nativeInstance.sendToDevice(registrationToken, payload));
+      return promiseToFuture(nativeInstance.sendToDevice(registrationToken, payload));
   }
 
   /// Sends an FCM message to a device group corresponding to the provided
@@ -134,23 +130,19 @@ class Messaging {
       String notificationKey, MessagingPayload payload,
       [MessagingOptions options]) {
     if (options != null)
-      return promiseToFuture(
-          nativeInstance.sendToDeviceGroup(notificationKey, payload, options));
+      return promiseToFuture(nativeInstance.sendToDeviceGroup(notificationKey, payload, options));
     else
-      return promiseToFuture(
-          nativeInstance.sendToDeviceGroup(notificationKey, payload));
+      return promiseToFuture(nativeInstance.sendToDeviceGroup(notificationKey, payload));
   }
 
   /// Sends an FCM message to a [topic].
   ///
   /// Returns Future<MessagingTopicResponse> fulfilled with the server's
   /// response after the message has been sent.
-  Future<MessagingTopicResponse> sendToTopic(
-      String topic, MessagingPayload payload,
+  Future<MessagingTopicResponse> sendToTopic(String topic, MessagingPayload payload,
       [MessagingOptions options]) {
     if (options != null)
-      return promiseToFuture(
-          nativeInstance.sendToTopic(topic, payload, options));
+      return promiseToFuture(nativeInstance.sendToTopic(topic, payload, options));
     else
       return promiseToFuture(nativeInstance.sendToTopic(topic, payload));
   }
@@ -161,8 +153,7 @@ class Messaging {
   /// server's response after the device has been subscribed to the topic.
   Future<MessagingTopicManagementResponse> subscribeToTopic(
           String registrationTokens, String topic) =>
-      promiseToFuture(
-          nativeInstance.subscribeToTopic(registrationTokens, topic));
+      promiseToFuture(nativeInstance.subscribeToTopic(registrationTokens, topic));
 
   /// Unsubscribes a device from an FCM [topic].
   ///
@@ -170,6 +161,5 @@ class Messaging {
   /// server's response after the device has been subscribed to the topic.
   Future<MessagingTopicManagementResponse> unsubscribeFromTopic(
           String registrationTokens, String topic) =>
-      promiseToFuture(
-          nativeInstance.unsubscribeFromTopic(registrationTokens, topic));
+      promiseToFuture(nativeInstance.unsubscribeFromTopic(registrationTokens, topic));
 }

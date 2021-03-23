@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 @TestOn('node')
 import 'dart:async';
 
@@ -85,11 +87,9 @@ void main() {
         var nestedData = new DocumentData();
         nestedData.setString('nestedVal', 'very nested');
         data.setNestedData('nestedData', nestedData);
-        data.setFieldValue('serverTimestampFieldValue',
-            Firestore.fieldValues.serverTimestamp());
+        data.setFieldValue('serverTimestampFieldValue', Firestore.fieldValues.serverTimestamp());
         data.setFieldValue('deleteFieldValue', Firestore.fieldValues.delete());
-        data.setList(
-            'fieldValueInList', [Firestore.fieldValues.serverTimestamp()]);
+        data.setList('fieldValueInList', [Firestore.fieldValues.serverTimestamp()]);
 
         _check() {
           expect(data.keys.length, 13);
@@ -108,11 +108,9 @@ void main() {
           expect(nestedData.getString('nestedVal'), 'very nested');
           // Check the field value (no getter here)
           Map<String, dynamic> map = data.toMap();
-          expect(map['serverTimestampFieldValue'],
-              Firestore.fieldValues.serverTimestamp());
+          expect(map['serverTimestampFieldValue'], Firestore.fieldValues.serverTimestamp());
           expect(map['deleteFieldValue'], Firestore.fieldValues.delete());
-          expect(map['fieldValueInList'],
-              [Firestore.fieldValues.serverTimestamp()]);
+          expect(map['fieldValueInList'], [Firestore.fieldValues.serverTimestamp()]);
         }
 
         _check();
@@ -161,8 +159,7 @@ void main() {
         expect(result.getTimestamp('tsVal'), Timestamp.fromDateTime(date));
         var nested = result.getNestedData('nestedVal');
         expect(nested.getString('nestedKey'), 'much nested');
-        expect(
-            result.getTimestamp('serverTimestamp'), TypeMatcher<Timestamp>());
+        expect(result.getTimestamp('serverTimestamp'), TypeMatcher<Timestamp>());
         var complexVal = result.getNestedData('complexVal');
         expect(complexVal.getList('sub'), [
           {
@@ -197,11 +194,10 @@ void main() {
         var fakeGeoPoint = new DocumentData.fromMap(
             {'latitude': 23.03, 'longitude': 84.19, 'toString': 'GeoPoint'});
         data.setNestedData('fakeGeoPoint', fakeGeoPoint);
-        var fakeRef = new DocumentData.fromMap(
-            {'firestore': 'Nope', 'id': 'Nah', 'onSnapshot': 'Function'});
+        var fakeRef =
+            new DocumentData.fromMap({'firestore': 'Nope', 'id': 'Nah', 'onSnapshot': 'Function'});
         data.setNestedData('fakeRef', fakeRef);
-        var fakeDate = new DocumentData.fromMap(
-            {'toDateString': 'date', 'getTime': 'Function'});
+        var fakeDate = new DocumentData.fromMap({'toDateString': 'date', 'getTime': 'Function'});
         data.setNestedData('fakeDate', fakeDate);
         await ref.setData(data);
 
@@ -227,16 +223,13 @@ void main() {
         expect(result['nestedData'], {'nestedVal': 'very nested'});
         expect(result['fakeGeoPoint'],
             {'latitude': 23.03, 'longitude': 84.19, 'toString': 'GeoPoint'});
-        expect(result['fakeRef'],
-            {'firestore': 'Nope', 'id': 'Nah', 'onSnapshot': 'Function'});
-        expect(result['fakeDate'],
-            {'toDateString': 'date', 'getTime': 'Function'});
+        expect(result['fakeRef'], {'firestore': 'Nope', 'id': 'Nah', 'onSnapshot': 'Function'});
+        expect(result['fakeDate'], {'toDateString': 'date', 'getTime': 'Function'});
       });
 
       test('unsupported data types', () async {
         var ref = app.firestore().document('tests/unsupported');
-        await ref.setData(new DocumentData()
-          ..setGeoPoint('geoVal', new GeoPoint(23.03, 19.84)));
+        await ref.setData(new DocumentData()..setGeoPoint('geoVal', new GeoPoint(23.03, 19.84)));
         var snapshot = await ref.get();
         var data = snapshot.data;
         expect(() => data.getList('geoVal'), throwsStateError);
@@ -294,10 +287,8 @@ void main() {
         var ref = app.firestore().document('tests/array_field_value');
 
         // Make sure FieldValue class is exported by using it here
-        FieldValue fieldValueArrayUnion =
-            Firestore.fieldValues.arrayUnion([1, 2]);
-        FieldValue fieldValueArrayUnion2 =
-            Firestore.fieldValues.arrayUnion([10, 11]);
+        FieldValue fieldValueArrayUnion = Firestore.fieldValues.arrayUnion([1, 2]);
+        FieldValue fieldValueArrayUnion2 = Firestore.fieldValues.arrayUnion([10, 11]);
         FieldValue fieldValueArrayComplex = Firestore.fieldValues.arrayUnion([
           100,
           "text",
@@ -330,10 +321,8 @@ void main() {
 
         // update and remove some data
         var updateData = new UpdateData();
-        updateData.setFieldValue(
-            "array", Firestore.fieldValues.arrayUnion([2, 3]));
-        updateData.setFieldValue(
-            "array2", Firestore.fieldValues.arrayRemove([11, 12]));
+        updateData.setFieldValue("array", Firestore.fieldValues.arrayUnion([2, 3]));
+        updateData.setFieldValue("array2", Firestore.fieldValues.arrayRemove([11, 12]));
         // try to remove a complex object
         updateData.setFieldValue(
             "complex",
@@ -400,13 +389,9 @@ void main() {
         var doc = app.firestore().document('tests/list_collections');
         // Create an element in a sub collection to make sure the collection
         // exists
-        await doc
-            .collection('sub')
-            .document('item')
-            .setData(DocumentData.fromMap({}));
+        await doc.collection('sub').document('item').setData(DocumentData.fromMap({}));
         var collections = await doc.listCollections();
-        expect(collections.any((CollectionReference col) => col.id == 'sub'),
-            isTrue);
+        expect(collections.any((CollectionReference col) => col.id == 'sub'), isTrue);
       });
 
       test('getAll', () async {
@@ -530,8 +515,7 @@ void main() {
         expect(snapshot.documentChanges, hasLength(1));
         var doc = snapshot.documents.first;
         expect(doc.data.getString('name'), 'doc1');
-        expect(doc.data.getReference('ref'),
-            const TypeMatcher<DocumentReference>());
+        expect(doc.data.getReference('ref'), const TypeMatcher<DocumentReference>());
       });
 
       test('query filter with timestamp', () async {
@@ -543,13 +527,11 @@ void main() {
           DocumentData.fromMap({'createdAt': Timestamp.fromDateTime(now)}),
         );
         await doc2.setData(
-          DocumentData.fromMap({
-            'createdAt': Timestamp.fromDateTime(now.add(Duration(seconds: 10)))
-          }),
+          DocumentData.fromMap(
+              {'createdAt': Timestamp.fromDateTime(now.add(Duration(seconds: 10)))}),
         );
 
-        var query = collection.where('createdAt',
-            isEqualTo: Timestamp.fromDateTime(now));
+        var query = collection.where('createdAt', isEqualTo: Timestamp.fromDateTime(now));
         var snapshot = await query.get();
         expect(snapshot, isNotEmpty);
         expect(snapshot.documents, hasLength(1));
@@ -604,8 +586,7 @@ void main() {
           DocumentData.fromMap({'location': GeoPoint(34.12, 78.56)}),
         );
 
-        var query =
-            collection.where('location', isEqualTo: GeoPoint(12.34, 56.78));
+        var query = collection.where('location', isEqualTo: GeoPoint(12.34, 56.78));
         var snapshot = await query.get();
         expect(snapshot, isNotEmpty);
         expect(snapshot.documents, hasLength(1));
@@ -615,8 +596,7 @@ void main() {
 
       test('query filter with list object', () async {
         var collection = app.firestore().collection('tests/query/where-list');
-        var collRef =
-            collection; // testsRef.doc('nested_order_test').collection('many');
+        var collRef = collection; // testsRef.doc('nested_order_test').collection('many');
         var docRefOne = collRef.document('doc1');
 
         await docRefOne.setData(DocumentData.fromMap({
@@ -634,9 +614,7 @@ void main() {
         }));
 
         List<String> _querySnapshotDocIds(QuerySnapshot querySnapshot) {
-          return querySnapshot.documents
-              .map((snapshot) => snapshot.documentID)
-              .toList();
+          return querySnapshot.documents.map((snapshot) => snapshot.documentID).toList();
         }
 
         // complex object
@@ -650,8 +628,7 @@ void main() {
 
       test('query filter with map object', () async {
         var collection = app.firestore().collection('tests/query/where-map');
-        var collRef =
-            collection; // testsRef.doc('nested_order_test').collection('many');
+        var collRef = collection; // testsRef.doc('nested_order_test').collection('many');
         var docRefOne = collRef.document('doc1');
 
         await docRefOne.setData(DocumentData.fromMap({
@@ -669,14 +646,11 @@ void main() {
         }));
 
         List<String> _querySnapshotDocIds(QuerySnapshot querySnapshot) {
-          return querySnapshot.documents
-              .map((snapshot) => snapshot.documentID)
-              .toList();
+          return querySnapshot.documents.map((snapshot) => snapshot.documentID).toList();
         }
 
         // complex object
-        var querySnapshot =
-            await collRef.where('sub', isEqualTo: {'value': 'a'}).get();
+        var querySnapshot = await collRef.where('sub', isEqualTo: {'value': 'a'}).get();
         expect(_querySnapshotDocIds(querySnapshot), ['doc2']);
 
         // ordered by sub (complex object)
@@ -735,8 +709,7 @@ void main() {
 
         // set the content
         var docRef = collRef.document('one');
-        await docRef.setData(
-            new DocumentData()..setInt('field1', 1)..setInt('field2', 2));
+        await docRef.setData(new DocumentData()..setInt('field1', 1)..setInt('field2', 2));
 
         QuerySnapshot querySnapshot = await collRef.select(['field2']).get();
         var documentData = querySnapshot.documents.first.data;
@@ -750,8 +723,7 @@ void main() {
       });
 
       test('order and limits', () async {
-        var collRef =
-            app.firestore().collection('tests/query/order_and_limits');
+        var collRef = app.firestore().collection('tests/query/order_and_limits');
 
         // Create or update the content
         var docRefOne = collRef.document('one');
@@ -784,15 +756,13 @@ void main() {
         expect(list.first.reference.documentID, "two");
 
         // start at
-        querySnapshot =
-            await collRef.orderBy('value').startAt(values: [2]).get();
+        querySnapshot = await collRef.orderBy('value').startAt(values: [2]).get();
         list = querySnapshot.documents;
         expect(list.length, 1);
         expect(list.first.reference.documentID, "two");
 
         // start after
-        querySnapshot =
-            await collRef.orderBy('value').startAfter(values: [1]).get();
+        querySnapshot = await collRef.orderBy('value').startAfter(values: [1]).get();
         list = querySnapshot.documents;
         expect(list.length, 1);
         expect(list.first.reference.documentID, "two");
@@ -804,17 +774,13 @@ void main() {
         expect(list.first.reference.documentID, "one");
 
         // end before
-        querySnapshot =
-            await collRef.orderBy('value').endBefore(values: [2]).get();
+        querySnapshot = await collRef.orderBy('value').endBefore(values: [2]).get();
         list = querySnapshot.documents;
         expect(list.length, 1);
         expect(list.first.reference.documentID, "one");
 
         // start after using snapshot
-        querySnapshot = await collRef
-            .orderBy('value')
-            .startAfter(snapshot: list.first)
-            .get();
+        querySnapshot = await collRef.orderBy('value').startAfter(snapshot: list.first).get();
         list = querySnapshot.documents;
         expect(list.length, 1);
         expect(list.first.reference.documentID, "two");
@@ -827,8 +793,7 @@ void main() {
       });
 
       test('snapshots changes', () async {
-        var collRef =
-            app.firestore().collection('tests/query/snapshots_changes');
+        var collRef = app.firestore().collection('tests/query/snapshots_changes');
         var docRef = collRef.document('item');
 
         // delete item
@@ -843,8 +808,7 @@ void main() {
             stepCount, (_) => new Completer<List<DocumentChange>>());
 
         int stepIndex = 0;
-        var subscription =
-            collRef.snapshots.listen((QuerySnapshot querySnapshot) {
+        var subscription = collRef.snapshots.listen((QuerySnapshot querySnapshot) {
           // complete each step when receiving data
           if (stepIndex < stepCount) {
             completers[stepIndex++].complete(querySnapshot.documentChanges);
@@ -905,19 +869,15 @@ void main() {
 
         await Future.delayed(Duration(seconds: 1)); // to avoid too much contention errors
 
-        List<DocumentSnapshot> list =
-            await app.firestore().runTransaction((Transaction tx) async {
-          var query = await tx.getQuery(
-              collRef.orderBy('value').where('value', isGreaterThan: 1));
+        List<DocumentSnapshot> list = await app.firestore().runTransaction((Transaction tx) async {
+          var query = await tx.getQuery(collRef.orderBy('value').where('value', isGreaterThan: 1));
           var list = query.documents;
 
           var doc4 = (await tx.get(doc4Ref)).data.getInt('value');
           tx.create(doc1Ref, new DocumentData()..setInt('value', 1 + doc4));
-          tx.update(
-              doc2Ref, new UpdateData()..setInt('other.value', 22 + doc4));
+          tx.update(doc2Ref, new UpdateData()..setInt('other.value', 22 + doc4));
           tx.set(doc3Ref, new DocumentData()..setInt('value', 3 + doc4));
-          tx.set(doc3Ref, new DocumentData()..setInt('other.value', 33 + doc4),
-              merge: true);
+          tx.set(doc3Ref, new DocumentData()..setInt('other.value', 33 + doc4), merge: true);
           tx.delete(doc4Ref);
 
           return list;
@@ -943,8 +903,7 @@ void main() {
       });
 
       test('runTransaction, test Precondition lastUpdateTime', () async {
-        var collRef =
-            app.firestore().collection('tests/transaction/precondition');
+        var collRef = app.firestore().collection('tests/transaction/precondition');
         // this one will be updated
         var doc1Ref = collRef.document('item1');
         // this one will be deleted
@@ -966,8 +925,7 @@ void main() {
 
         Future result = app.firestore().runTransaction((Transaction tx) async {
           var doc2 = (await tx.get(doc2Ref)).data;
-          tx.update(
-              doc1Ref, new UpdateData()..setInt('value', doc2.getInt('value')),
+          tx.update(doc1Ref, new UpdateData()..setInt('value', doc2.getInt('value')),
               lastUpdateTime: doc1UpdateTime1);
           tx.delete(doc2Ref, lastUpdateTime: doc2UpdateTime1);
         });
@@ -997,14 +955,13 @@ void main() {
         var doc1Ref = collRef.document('counter');
         await doc1Ref.setData(new DocumentData()..setInt('value', 1));
 
-        List<Future<int>> futures = new List();
-        List<dynamic> errors = new List();
-        List<int> complete = new List();
+        List<Future<int>> futures = [];
+        List<dynamic> errors = [];
+        List<int> complete = [];
 
         var futuresCount = 5;
         for (int i = 0; i < futuresCount; i++) {
-          var transaction =
-              app.firestore().runTransaction<int>((Transaction tx) async {
+          var transaction = app.firestore().runTransaction<int>((Transaction tx) async {
             var doc1 = await tx.get(doc1Ref);
             var val = doc1.data.getInt('value') + 1;
             tx.set(doc1Ref, new DocumentData()..setInt('value', val));
