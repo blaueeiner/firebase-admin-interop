@@ -157,11 +157,14 @@ class CreateWriteStreamOptions {
 
   external bool get validation;
 
+  external StorageMetadata get metadata;
+
   external factory CreateWriteStreamOptions({
     String contentType,
     bool gzip,
     bool resumable,
     bool validation,
+    StorageMetadata metadata,
   });
 }
 
