@@ -52,4 +52,7 @@ class App {
   /// Renders this app unusable and frees the resources of all associated
   /// services.
   Future<void> delete() => promiseToFuture<void>(nativeInstance.delete());
+
+  Future<js.AccessToken> getAccessToken() async =>
+      await promiseToFuture(nativeInstance.options.credential.getAccessToken()) as js.AccessToken;
 }
