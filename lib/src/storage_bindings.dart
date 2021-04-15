@@ -137,6 +137,8 @@ abstract class StorageFile {
 
   external Bucket get parent;
 
+  external Promise exists([options]);
+
   external Promise save(data, [CreateWriteStreamOptions options]);
 
   external Writable createWriteStream([CreateWriteStreamOptions options]);

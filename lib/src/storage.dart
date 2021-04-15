@@ -55,6 +55,8 @@ class StorageFile {
 
   Bucket get parent => Bucket(nativeInstance.parent);
 
+  Future<bool> exists([options]) => promiseToFuture<bool>(nativeInstance.exists(options));
+
   Future<void> save(data, [js.CreateWriteStreamOptions options]) =>
       promiseToFuture(nativeInstance.save(data, options));
 
