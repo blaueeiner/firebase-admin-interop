@@ -67,4 +67,7 @@ class StorageFile {
       nativeInstance.createReadStream(options);
 
   Future<void> delete() => promiseToFuture(nativeInstance.delete());
+
+  Future<void> copy(StorageFile destinationFile) =>
+      promiseToFuture(nativeInstance.copy(destinationFile.nativeInstance));
 }

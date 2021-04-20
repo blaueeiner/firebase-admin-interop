@@ -146,6 +146,8 @@ abstract class StorageFile {
   external Readable createReadStream([CreateReadStreamOptions options]);
 
   external Promise delete([options]);
+
+  external Promise copy(StorageFile destinationFile);
 }
 
 @JS()
