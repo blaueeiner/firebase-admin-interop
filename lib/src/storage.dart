@@ -56,7 +56,7 @@ class StorageFile {
   Bucket get parent => Bucket(nativeInstance.parent);
 
   Future<bool> exists([options]) async =>
-      (await promiseToFuture<List<bool>>(nativeInstance.exists(options))).first;
+      (await promiseToFuture<List>(nativeInstance.exists(options))).map((e) => e as bool).first;
 
   Future<void> save(data, [js.CreateWriteStreamOptions options]) =>
       promiseToFuture(nativeInstance.save(data, options));
